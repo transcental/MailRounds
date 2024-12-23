@@ -28,7 +28,7 @@ class Environment:
         if self.environment not in ["development", "production"]:
             raise ValueError("ENVIRONMENT must be either 'development' or 'production'")
     
-        self.airtable = AirtableManager(api_key=self.airtable_api_key, base_id=self.airtable_base_id, production=self.environment == "productipn")
+        self.airtable = AirtableManager(api_key=self.airtable_api_key, base_id=self.airtable_base_id, production=self.environment == "production")
         
         self.COUNTRIES = ["United Kingdom"]
 

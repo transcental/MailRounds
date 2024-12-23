@@ -123,7 +123,7 @@ def create_mail_shortcut(ack: Callable, client: WebClient, body: dict):
             "callback_id": "create_mail",
             "title": {
                 "type": "plain_text",
-                "text": "Crete Mail"
+                "text": "Create Mail"
             },
             "submit": {
                 "type": "plain_text",
