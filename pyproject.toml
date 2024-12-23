@@ -1,0 +1,18 @@
+[project]
+name = "mailrounds"
+dynamic = ["version"]
+dependencies = [
+    "slack_bolt",
+    "python-dotenv",
+    "pyairtable",
+    "schedule"
+]
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+reportMissingModuleSource = false
+reportUnusedImport = true
+
+[tool.hatch.envs.default]
+path = "./.venv/"
