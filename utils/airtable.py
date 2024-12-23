@@ -44,7 +44,7 @@ class AirtableManager:
         return self.mail_table.first(formula=f"{{Message TS}} = '{msg_ts}'") if not airtable_id else self.mail_table.get(airtable_id)
         
     def update_user(self, user_id: str, **updates):
-        user = self.find_user(user_id)
+        user = self.find_user(user_id=user_id)
         if not user:
             return
         self.users_table.update(user["id"], updates)

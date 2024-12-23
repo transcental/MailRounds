@@ -108,7 +108,7 @@ def update_home_tab(client: WebClient, event: dict):
 def create_mail_shortcut(ack: Callable, client: WebClient, body: dict):
     ack()
     user_id = body["user"]["id"]
-    user = env.airtable.find_user(user_id)
+    user = env.airtable.find_user(user_id=user_id)
     if not user or not user["fields"].get("Admin", False):
         client.chat_postEphemeral(
             channel=body["channel"]["id"],
@@ -226,7 +226,7 @@ def reaction_added_event(body: dict, client: WebClient, say: Callable):
     if not mail:
         return
     
-    user = env.airtable.find_user(event["user"])
+    user = env.airtable.find_user(user_id=event["user"])
     if user and user.get('fields', {}).get("Address"):
         env.airtable.update_user(event["user"], **{
             "Rounds": list(set(user["fields"].get("Rounds", []) + [mail["id"]]))
@@ -251,9 +251,9 @@ def reaction_removed_event(body: dict, client: WebClient, say: Callable):
     if not mail:
         return
     
-    user = env.airtable.find_user(event["user"])
+    user = env.airtable.find_user(user_id=event["user"])
     if user:
-        env.airtable.update_user(event["user"], **{
+        env.airtable.update_user(user_id=event["user"], **{
             "Rounds": [round_id for round_id in set(user['fields'].get('Rounds', [])) if round_id != mail["id"]]
         })
         client.chat_postEphemeral(channel=event["item"]["channel"], user=event["user"], text="You've been removed from this mail round.")
@@ -261,9 +261,9 @@ def reaction_removed_event(body: dict, client: WebClient, say: Callable):
 @app.command('/mailround')
 def mailround_command(ack: Callable, body: dict, client: WebClient):
     ack()
-    user = env.airtable.find_user(body["user_id"])
+    user = env.airtable.find_user(user_id=body["user_id"])
     if not user:
-        user = env.airtable.create_user(body["user_id"])
+        user = env.airtable.create_user(user_id=body["user_id"])
     client.views_open(
         trigger_id=body["trigger_id"],
         view={
