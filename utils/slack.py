@@ -186,7 +186,7 @@ def create_mail_shortcut(ack: Callable, client: WebClient, body: dict):
                 }
                 
             ],
-            "private_metadata": f"{body["channel"]["id"]};{body["message"]["ts"]};{user['id']}"
+            "private_metadata": f"{body['channel']['id']};{body['message']['ts']};{user['id']}"
         }
     )
 
@@ -200,13 +200,6 @@ def create_mail_view_callback(ack: Callable, body: dict, client: WebClient, say:
     max_ppl = values["max_ppl"]["max_ppl"]["value"]
     
     channel_id, ts, user_id = body["view"]["private_metadata"].split(";")
-    say(f"{channel_id}, {ts}, {user_id}", channel=env.slack_mailroom_channel)
-    msg_link = f"https://hackclub.slack.com/archives/{env.slack_mailroom_channel}/p{ts.replace('.', '')}"
-    
-    client.chat_postMessage(
-        channel=env.slack_mailroom_channel,
-        text=f"{mail_name} created by <@{body['user']['id']}> on <{msg_link}|this message>."
-    )
     
     env.airtable.create_mail(
         mail_name,
